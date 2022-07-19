@@ -2,6 +2,16 @@
 #include "leds.h"
 #include "mock_errores.h"
 
+#define TST_ALL_LEDS_ON                 0xFFFF
+#define TST_ALL_LEDS_OFF                0x0000
+#define TST_LED_ON                      1
+#define TST_LED_OFF                     0
+#define TST_LED5                        5
+#define TST_MESSAGE_LINE                0
+#define TST_LED_INVALID_LOWER_LIMIT     0
+#define TST_LED_INVALID_UPPER_LIMIT     17
+#define TST_LED_TO_BIT(x) (x-1)
+
 static uint16_t ledsVirtuales;
 
 /**
@@ -32,9 +42,9 @@ void tearDown(void) {
  */
 
 void test_ledsOffAfterCreate(void) {
-    uint16_t ledsVirtuales = 0xFFFF;
+    uint16_t ledsVirtuales = TST_ALL_LEDS_ON;
     LedsInit(&ledsVirtuales);
-    TEST_ASSERT_EQUAL_HEX16(0x0000, ledsVirtuales);
+    TEST_ASSERT_EQUAL_HEX16(TST_ALL_LEDS_OFF, ledsVirtuales);
 }
 
 
@@ -45,8 +55,8 @@ void test_ledsOffAfterCreate(void) {
  */
 
 void test_TurnOnOneLed(void) {
-    LedTurnOn(5);
-    TEST_ASSERT_EQUAL_HEX16(1 << 4, ledsVirtuales);   
+    LedTurnOn(TST_LED5);
+    TEST_ASSERT_EQUAL_HEX16(TST_LED_ON << TST_LED_TO_BIT(TST_LED5), ledsVirtuales);   
 }
 
 
@@ -57,9 +67,9 @@ void test_TurnOnOneLed(void) {
  */
 
 void test_TurnOffOneLed(void) {
-    LedTurnOn(5);
-    LedTurnOff(5);
-    TEST_ASSERT_EQUAL_HEX16(0x0000, ledsVirtuales);   
+    LedTurnOn(TST_LED5);
+    LedTurnOff(TST_LED5);
+    TEST_ASSERT_EQUAL_HEX16(TST_LED_OFF, ledsVirtuales);   
 }
 
 
@@ -70,11 +80,11 @@ void test_TurnOffOneLed(void) {
  */
 
 void test_TurnOnAndOffManyLeds(void) {
-    LedTurnOn(5);
+    LedTurnOn(TST_LED5);
     LedTurnOn(11);
     LedTurnOff(3);
     LedTurnOff(11);
-    TEST_ASSERT_EQUAL_HEX16(1 << 4, ledsVirtuales);   
+    TEST_ASSERT_EQUAL_HEX16(TST_LED_ON << TST_LED_TO_BIT(TST_LED5), ledsVirtuales);   
 }
 
 
@@ -85,9 +95,9 @@ void test_TurnOnAndOffManyLeds(void) {
  */
 
 void test_InvalidUpperLimitTurnOnLed(void){
-    RegistrarMensaje_Expect(ALERTA, "LedTurnOn", 0, "Numero de led invalido");
+    RegistrarMensaje_Expect(ALERTA, "LedTurnOn", TST_MESSAGE_LINE, "Numero de led invalido");
     RegistrarMensaje_IgnoreArg_linea();
-    LedTurnOn(17);
+    LedTurnOn(TST_LED_INVALID_UPPER_LIMIT);
 }
 
 
@@ -99,7 +109,7 @@ void test_InvalidUpperLimitTurnOnLed(void){
 
 void test_TurnOnAllLeds(void){
     LedTurnOnAllAtOnce();
-    TEST_ASSERT_EQUAL_HEX16(0xFFFF, ledsVirtuales);
+    TEST_ASSERT_EQUAL_HEX16(TST_ALL_LEDS_ON, ledsVirtuales);
 }
 
 
@@ -112,7 +122,7 @@ void test_TurnOnAllLeds(void){
 void test_TurnOffAllLeds(void){
     LedTurnOnAllAtOnce();
     LedTurnOffAllAtOnce();
-    TEST_ASSERT_EQUAL_HEX16(0x0, ledsVirtuales);
+    TEST_ASSERT_EQUAL_HEX16(TST_ALL_LEDS_OFF, ledsVirtuales);
 }
 
 
@@ -124,8 +134,8 @@ void test_TurnOffAllLeds(void){
 
 void test_queryLedStateOff(){
     bool_t ledState = true;
-    ledsVirtuales = 0 << 4;
-    ledState = LedQueryState(5);
+    ledsVirtuales = TST_LED_OFF << TST_LED_TO_BIT(TST_LED5);
+    ledState = LedQueryState(TST_LED5);
     TEST_ASSERT_FALSE(ledState);
 }
 
@@ -138,8 +148,8 @@ void test_queryLedStateOff(){
 
 void test_queryLedStateOn(){
     bool_t ledState = false;
-    ledsVirtuales = 1 << 4;
-    ledState = LedQueryState(5);
+    ledsVirtuales = TST_LED_ON << TST_LED_TO_BIT(TST_LED5);
+    ledState = LedQueryState(TST_LED5);
     TEST_ASSERT_TRUE(ledState);
 }
 
@@ -151,9 +161,9 @@ void test_queryLedStateOn(){
  */
 
 void test_queryLedStateUpperLimmit(){
-    RegistrarMensaje_Expect(ALERTA, "LedQueryState", 0, "Numero de led invalido");
+    RegistrarMensaje_Expect(ALERTA, "LedQueryState", TST_MESSAGE_LINE, "Numero de led invalido");
     RegistrarMensaje_IgnoreArg_linea();
-    LedQueryState(17);
+    LedQueryState(TST_LED_INVALID_UPPER_LIMIT);
 }
 
 
@@ -164,7 +174,7 @@ void test_queryLedStateUpperLimmit(){
  */
 
 void test_queryLedStateLowerLimmit(){
-    RegistrarMensaje_Expect(ALERTA, "LedQueryState", 0, "Numero de led invalido");
+    RegistrarMensaje_Expect(ALERTA, "LedQueryState", TST_MESSAGE_LINE, "Numero de led invalido");
     RegistrarMensaje_IgnoreArg_linea();
-    LedQueryState(0);
+    LedQueryState(TST_LED_INVALID_LOWER_LIMIT);
 }
