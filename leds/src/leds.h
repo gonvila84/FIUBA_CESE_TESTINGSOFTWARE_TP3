@@ -6,38 +6,62 @@
 
 typedef bool bool_t;
 
+
+
 /**
  * @brief Configura la biblioteca y apaga todos los leds
  * 
  * @param direccion Direccion del puerto GPIO que controla los leds.
  */
+
 void LedsInit(uint16_t * direccion);
+
+
 
 /**
  * @brief Prende un led
  * 
  * @param led Numero de led a prender (1 al 16)
  */
+
 void LedTurnOn(uint8_t led);
+
+
 
 /**
  * @brief Apaga un led
  * 
  * @param led Numero de led a apagar (1 al 16)
  */
+
 void LedTurnOff(uint8_t led);
+
+
 
 /**
  * @brief Enciende todos los leds con una unica invocacion
  * 
  */
+
 void LedTurnOnAllAtOnce(void);
+
+
 
 /**
  * @brief Apaga todos los leds con una unica invocacion
  * 
  */
+
 void LedTurnOffAllAtOnce(void);
+
+
+
+/**
+ * @brief Retorna true o false dependiendo del valor obtenido para el bit que representa al LED.
+ * 
+ * @param led 
+ * @return bool_t 
+ */
 
 bool_t LedQueryState(uint8_t led);
 
