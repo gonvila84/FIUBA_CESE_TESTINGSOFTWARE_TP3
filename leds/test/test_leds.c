@@ -52,14 +52,13 @@ void test_InvalidUpperLimitTurnOnLed(void){
 
 //Se pueden prender todos los LEDs de una vez.
 void test_TurnOnAllLeds(void){
-    ledsVirtuales = 0x0;
     LedTurnOnAllAtOnce();
     TEST_ASSERT_EQUAL_HEX16(0xFFFF, ledsVirtuales);
 }
 
 //Se pueden apagar todos los LEDs de una vez.
 void test_TurnOffAllLeds(void){
-    ledsVirtuales = 0xFFFF;
+    LedTurnOnAllAtOnce();
     LedTurnOffAllAtOnce();
     TEST_ASSERT_EQUAL_HEX16(0x0, ledsVirtuales);
 }
