@@ -21,7 +21,7 @@ uint16_t LedToMask(uint8_t led) {
 
 void LedsInit(uint16_t * direccion) {
     puerto = direccion;
-    *puerto = LEDS_ALL_OFF;
+    LedTurnOffAllAtOnce();
 }
 
 void LedTurnOn(uint8_t led) {
