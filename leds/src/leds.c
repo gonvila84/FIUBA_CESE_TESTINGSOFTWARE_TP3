@@ -12,20 +12,20 @@
 static uint16_t * puerto;
 
 uint8_t ledToBitPosition(uint8_t led) {
-    return led - 1;
+    return led - LED_TO_BIT_OFFSET;
 }
 
 uint16_t LedToMask(uint8_t led) {
-    return (1 << (ledToBitPosition(led)));
+    return (LED_ON << (ledToBitPosition(led)));
 }
 
 void LedsInit(uint16_t * direccion) {
     puerto = direccion;
-    *puerto = 0;
+    *puerto = LEDS_ALL_OFF;
 }
 
 void LedTurnOn(uint8_t led) {
-    if (led > 16)
+    if (led > LED_UPPER_LIMIT)
     {
         Alerta("Numero de led invalido");
     }
