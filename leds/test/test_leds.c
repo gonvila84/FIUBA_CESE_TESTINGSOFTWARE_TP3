@@ -87,6 +87,7 @@ void test_queryLedStateUpperLimmit(){
     LedQueryState(17);
 }
 
+//Se prueban la funcion de consulta del estado del led on los limites led < 1 y led > 16
 void test_queryLedStateLowerLimmit(){
     RegistrarMensaje_Expect(ALERTA, "LedQueryState", 0, "Numero de led invalido");
     RegistrarMensaje_IgnoreArg_linea();
