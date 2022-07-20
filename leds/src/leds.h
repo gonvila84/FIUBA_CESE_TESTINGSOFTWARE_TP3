@@ -8,6 +8,8 @@ typedef bool bool_t;
 
 
 
+// Public functions declaration section ---------------------------------------------------------------------------------------
+
 /**
  * @brief Configura la biblioteca y apaga todos los leds
  * 
@@ -64,5 +66,7 @@ void LedTurnOffAllAtOnce(void);
  */
 
 bool_t LedQueryState(uint8_t led);
+
+// -----------------------------------------------------------------------------------------------------------------------------
 
 #endif

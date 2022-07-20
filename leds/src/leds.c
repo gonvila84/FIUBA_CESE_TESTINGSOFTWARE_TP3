@@ -11,7 +11,55 @@
 
 static uint16_t * puerto;
 
+// Private functions declaration section ---------------------------------------------------------------------------------------
 
+/**
+ * @brief Funcion de ayuda para determinar si el numero de led se encuentra entre los limites validos 
+ * 
+ * @param led 
+ * @return bool_t 
+ */
+
+bool_t    isLedNumberValid(uint8_t led);
+
+
+
+/**
+ * @brief Funcion de ayuda para traducir el numero de led a un numero de bit dentro del vector de leds
+ * 
+ * @param led 
+ * @return uint8_t 
+ */
+
+uint8_t   ledToBitPosition(uint8_t led);
+
+
+
+/**
+ * @brief Funcion de ayuda que genera un bit de encendido para la posicion de bit correspondiente al numero de led
+ * 
+ * @param led 
+ * @return uint16_t 
+ */
+
+uint16_t  LedToMask(uint8_t led);
+
+
+
+/**
+ * @brief Funcion de ayuda que permite recuperar el estado del bit correspondiente a un led determinado
+ * 
+ * @param led 
+ * @return uint16_t 
+ */
+
+uint16_t  LedGetBitStatus(uint8_t led);
+
+// -----------------------------------------------------------------------------------------------------------------------------
+
+
+
+// Functions declaration section -----------------------------------------------------------------------------------------------
 
 uint8_t ledToBitPosition(uint8_t led) {
     return led - LED_TO_BIT_OFFSET;
@@ -33,7 +81,7 @@ void LedsInit(uint16_t * direccion) {
 
 
 void LedTurnOn(uint8_t led) {
-    if (led > LED_UPPER_LIMIT)
+    if (!isLedNumberValid(led))
     {
         Alerta("Numero de led invalido");
     }
@@ -71,7 +119,7 @@ uint16_t LedGetBitStatus(uint8_t led) {
 
 bool_t LedQueryState(uint8_t led){
     uint16_t status;
-    if (led > LED_UPPER_LIMIT || led < LED_LOWER_LIMIT)
+    if (!isLedNumberValid(led))
     {
         Alerta("Numero de led invalido");
         return false;
@@ -84,3 +132,16 @@ bool_t LedQueryState(uint8_t led){
     }
     return false;
 }
+
+
+
+bool_t isLedNumberValid(uint8_t led)
+{
+    if (led > LED_UPPER_LIMIT || led < LED_LOWER_LIMIT)
+    {
+        return false;
+    }
+    return true;
+}
+
+// -----------------------------------------------------------------------------------------------------------------------------
