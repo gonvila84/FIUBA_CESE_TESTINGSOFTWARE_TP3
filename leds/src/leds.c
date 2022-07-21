@@ -59,7 +59,7 @@ uint16_t  LedGetBitStatus(uint8_t led);
 
 
 
-// Functions declaration section -----------------------------------------------------------------------------------------------
+// Functions definition section -----------------------------------------------------------------------------------------------
 
 uint8_t ledToBitPosition(uint8_t led) {
     return led - LED_TO_BIT_OFFSET;
